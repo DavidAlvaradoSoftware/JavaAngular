@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/blog")
 public class BlogController {
     private PostService postService;
 
@@ -17,29 +18,29 @@ public class BlogController {
     public void setMyService(PostService postService) {
         this.postService = postService;
     }
-    @PostMapping(value = "/blog", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public String addBlogPost(@RequestBody Post post){
         return postService.createPost(post).toString();
     }
 
-    @GetMapping(value = "/blog/all")
+    @GetMapping(value = "/all")
     public List<Post> getAllPosts(){
         return postService.getAllPosts();
     }
 
-    @GetMapping(value = "/blog")
+    @GetMapping
     public String getSinglePost(@RequestParam Long id){
         Optional<Post> result = postService.getPostById(id);
 
         return result.isPresent() ? result.get().toString() : "no element found";
     }
 
-    @PutMapping(value = "/blog")
+    @PutMapping
     public String updatePost(@RequestBody Post post){
         return postService.updatePost(post).toString();
     }
 
-    @DeleteMapping(value = "/blog")
+    @DeleteMapping
     public void deletePost(@RequestParam Long id){
         postService.deletePost(id);
     }
